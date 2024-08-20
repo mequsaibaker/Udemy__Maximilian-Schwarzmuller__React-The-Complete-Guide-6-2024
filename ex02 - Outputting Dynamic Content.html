@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "012 Outputting Dynamic Content", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to fill the already existing <code>User</code> component with some life! You should output the <strong>user's first name</strong> and <strong>last name</strong> (stored in the also already existing <code>userData</code> object) inside of the <code>User</code> component's <code>&lt;h2&gt;</code>&nbsp;element.</p><p>In addition, you should output the <strong>title</strong> (also stored in <code>userData</code>) in the <code>&lt;p&gt;</code> element inside the <code>User</code> component.</p><p>You're not allowed to copy &amp; paste the values into the component.</p><p>The finished app could look like this:</p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-01_16-03-03-88eff29a81c94385ab6667f95cf3c61e.jpg\">", "tests": [{"file_name": "App.spec.js", "content": "import { render, screen, cleanup } from '@testing-library/react';\n\nimport App, { User, userData } from '../src/App.js';\n\ndescribe('App component', () => {\n  afterEach(() => {\n    cleanup();\n  });\n\n  test('renders User component', () => {\n    render(<App />);\n    const userElement = screen.getByTestId('user');\n    expect(userElement).toBeInTheDocument();\n  });\n});\n\ndescribe('User component', () => {\n  test('outputs userData firstName and lastName', () => {\n    const testFirstName = 'Test First Name';\n    const testLastName = 'Test Last Name';\n    userData.firstName = testFirstName;\n    userData.lastName = testLastName;\n    render(<User />);\n    const firstNameElements = screen.getAllByText(testFirstName, { exact: false });\n    expect(firstNameElements.length).not.toBe(0)\n    const lastNameElements = screen.getAllByText(testLastName, { exact: false });\n    expect(lastNameElements.length).not.toBe(0)\n  });\n\n  test('outputs userData title', () => {\n    const testTitle = 'Test Title';\n    userData.title = testTitle;\n    render(<User />);\n    const titleElements = screen.getAllByText(testTitle, { exact: false });\n    expect(titleElements.length).not.toBe(0)\n  });\n\n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "export const userData = {\n  firstName: 'Maximilian',\n  lastName: 'Schwarzm\u00fcller',\n  title: 'Instructor',\n};\n\nexport function User() {\n  return (\n    <div id=\"user\" data-testid=\"user\">\n      <h2>\n        {userData.firstName} {userData.lastName}\n      </h2>\n      <p>{userData.title}</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <div id=\"app\">\n      <h1>Time to Practice</h1>\n      <p>Welcome on board of this course! You got this \ud83d\udcaa</p>\n      <User />\n    </div>\n  );\n}\n\nexport default App;\n", "type": "jsx"}, {"file_name": "index.css", "content": "@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  font-family: 'Raleway', sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(#e6e3eb, #d2ced7);\n  color: #e5d9f1;\n  min-height: 100vh;\n}\n\n#app {\n  margin: 2rem auto;\n  padding: 1rem;\n  max-width: 40rem;\n  text-align: center;\n  border-radius: 6px;\n  background: linear-gradient(#1f1d25, #17131c);\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);\n}\n\nh1 {\n  letter-spacing: 0.15rem;\n  font-family: 'Lato', sans-serif;\n  text-transform: uppercase;\n  margin-bottom: 2.5rem;\n}\n\n#user {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  margin: 2rem auto;\n  padding: 1rem;\n  border-radius: 8px;\n  background: linear-gradient(#faca71, #fae571);\n  color: #1f1d25;\n  max-width: 20rem;\n  animation: pulse 2s infinite;\n}\n\n#user h2 {\n  text-transform: uppercase;\n  margin: 0.25rem 0;\n  font-size: 1.15rem;\n  font-weight: normal;\n}\n\n#user p {\n  margin: 0;\n  font-size: 0.9rem;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n\n@keyframes pulse {\n  0% {\n    box-shadow: 0 0 0 0 rgba(250, 229, 113, 0.7);\n  }\n  50% {\n    box-shadow: 0 0 0 10px rgba(250, 229, 113, 0);\n  }\n  100% {\n    box-shadow: 0 0 0 0 rgba(250, 229, 113, 0);\n  }\n}\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
