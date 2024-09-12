@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 68704946, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which syntax can be used to output dynamic values /&nbsp;JavaScript expressions in JSX?</p>", "relatedLectureIds": "", "feedbacks": ["That's wrong. Using square brackets in your JSX code will simply display some square brackets on the screen.", "That's wrong. Using parentheses in your JSX code will simply display some parentheses on the screen.", "That's correct!", "That's wrong. Unlike in some other frameworks or libraries, only a single pair of curly braces is needed."], "answers": ["<p>[ ] (Square brackets)</p>", "<p>( )&nbsp;(Parentheses)</p>", "<p>{ } (Curly braces)</p>", "<p>{{ }} (Double curly braces)</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which syntax can be used to output dynamic values /&nbsp;JavaScript expressions in JSX?", "related_lectures": []}, {"_class": "assessment", "id": 68705040, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which values can be output as dynamic values in JSX (i.e., between curly braces)?</p>", "relatedLectureIds": "", "feedbacks": ["That's wrong. JavaScript statements like function definitions, if-statements etc. can't bet used as part of your JSX code / between curly braces in JSX code.", "That's wrong - there is no such thing as a \"React template\" or \"React template instruction\".", "That's correct. You could output expressions like \"1 + 1\", variables / constants that hold values, the result of calling a function etc.", "That's wrong - there is no such thing as a \"React template\" or \"React template expression\"."], "answers": ["<p>Any valid JavaScript statement</p>", "<p>Any valid React template instruction</p>", "<p>Any valid JavaScript expression</p>", "<p>Any valid React template expression</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which values can be output as dynamic values in JSX (i.e., between curly braces)?", "related_lectures": []}, {"_class": "assessment", "id": 68705258, "assessment_type": "multiple-choice", "prompt": {"question": "<p>How should you typically load /&nbsp;use images in React projects?</p>", "relatedLectureIds": "", "feedbacks": ["That's wrong. Whilst this might work in some projects during development, chances are high that the paths would be incorrect after building the project for production and deploying it.", "That's correct. By \"importing\" the image, a production-safe path gets generated under the hood.", "That's wrong. Whilst this might work in some projects during development, chances are high that the paths would be incorrect after building the project for production and deploying it.", "That's wrong. You can't set the image as a value."], "answers": ["<p>Set the &lt;img&gt;&nbsp;src equal to a relative string path to the image</p>", "<p>Set the &lt;img&gt;&nbsp;src equal to the path generated via an import statement (that points at the image)</p>", "<p>Set the &lt;img&gt;&nbsp;src equal to an absolute string path to the image</p>", "<p>Set the &lt;img&gt;&nbsp;src equal to the image itself</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "How should you typically load /&nbsp;use images in React projects?", "related_lectures": []}, {"_class": "assessment", "id": 68705292, "assessment_type": "multiple-choice", "prompt": {"question": "<p>How can you assign a dynamic value to an HTML&nbsp;element attribute?</p>", "relatedLectureIds": "", "feedbacks": ["That's correct. You simply replace the text value you would normally set for attributes with the dynamic (curly-brace-wrapped) value.", "That's wrong - there is no such thing as a \"directive\" in React projects. There is no special attribute syntax or feature.", "That's wrong. The idea is to set a dynamic value, not some hard-coded string", "That's wrong - there is no such thing as a \"React template\" and no special attribute syntax."], "answers": ["<p>Via the same syntax you use for dynamic values in JSX in general:&nbsp;Curly braces</p>", "<p>Via the special React attribute directive that can be added to all built-in and custom components</p>", "<p>Via the same syntax you use for attributes in general:&nbsp;You set the value as a hard-coded string</p>", "<p>Via the special React template attribute syntax that allows you to store dynamic values for attributes</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "How can you assign a dynamic value to an HTML&nbsp;element attribute?", "related_lectures": []}, {"_class": "assessment", "id": 68705308, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which core React concept can increase the reusability of React components?</p>", "relatedLectureIds": "", "feedbacks": ["That's wrong. JSX is definitely an important concept (especially for components) but it's not increasing the reusability.", "That's wrong. Classes don't have anything to do with that.", "That's wrong. Components are indeed defined as functions but that's true for all components - no matter how reusable they may be.", "That's correct! Props are essentially custom attributes that can be set on components."], "answers": ["<p>JSX</p>", "<p>Classes</p>", "<p>Functions</p>", "<p>Props</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "Which core React concept can increase the reusability of React components?", "related_lectures": []}, {"_class": "assessment", "id": 68705676, "assessment_type": "multiple-choice", "prompt": {"question": "<p>How do \"props\"&nbsp;work in React?</p>", "relatedLectureIds": "", "feedbacks": ["That's wrong, props can be set as described but they're not output in the JSX code automatically.", "That's correct! React automatically passes a props object as the first argument to the receiving component", "That's wrong - props can be set as described but they are not set as constants thereafter. Instead, they are received as a parameter (an object)", "That's wrong, there is no \"getProps()\" function"], "answers": ["<p>You can set props (\"custom attributes\") on components to automatically output them in the component's JSX&nbsp;code</p>", "<p>You can set props (\"custom attributes\") on components to then extract &amp; use them in the receiving component</p>", "<p>You can set props (\"custom attributes\") on components which then receive them as automatically provided constants in the function body</p>", "<p>You can set props (\"custom attributes\") on components which can then call a getProps() function to extract the received values</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "How do \"props\"&nbsp;work in React?", "related_lectures": []}, {"_class": "assessment", "id": 68706140, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following four code examples for setting &amp;&nbsp;extracting props would NOT&nbsp;work as intended?</p><p><em>I.e., which example will NOT&nbsp;output the text \"Priority: 5\" on the screen.</em></p>", "relatedLectureIds": "", "feedbacks": ["That's not the right choice. This syntax might look weird (and indeed also is unnecessarily complicated) but it would work. You can use \"Rest properties\" to group properties that have not been \"pulled out\" via destructuring into a new object (\"props\" in this case). So the \"priority\" prop could be extracted from the props object as shown.", "That's not the right choice. React automatically passes a \"props\" object as a first argument to the component function. This object contains all props (\"custom attributes\") as key-value pairs (i.e., as properties). So accessing \"priority\" on \"props\" will work", "That's not the right choice. This example will work as React automatically passed an object with all \"custom attributes\" as a first argument to the component function. Object destructuring can then be used as shown in this example to \"pull out\" the props the component needs.", "That's the right choice. The error is subtle but this example does NOT use object destructuring. So here, the \"priority\" prop is not pulled out of the props object. Instead, it's now the entire props object that's named \"priority\". This wouldn't be a problem since the name is up to you. But it's now the entire object that's output in the paragraph, not the \"priority\" property. Therefore, the output would not be \"Priority: 5\" but instead \"Priority: [Object object]\" (or something like that)."], "answers": ["<pre class=\"prettyprint linenums\">&lt;MyComponent priority={5} /&gt;</pre><p><br></p><pre class=\"prettyprint linenums\">function MyComponent({...props}) {\n  return &lt;p&gt;Priority:&nbsp;{props.priority}&lt;/p&gt;\n}</pre>", "<pre class=\"prettyprint linenums\">&lt;MyComponent priority={5} /&gt;</pre><p><br></p><pre class=\"prettyprint linenums\">function MyComponent(props) {\n  return &lt;p&gt;Priority:&nbsp;{props.priority}&lt;/p&gt;\n}</pre>", "<pre class=\"prettyprint linenums\">&lt;MyComponent priority={5} /&gt;</pre><p><br></p><pre class=\"prettyprint linenums\">function MyComponent({priority}) {\n  return &lt;p&gt;Priority:&nbsp;{priority}&lt;/p&gt;\n}</pre>", "<pre class=\"prettyprint linenums\">&lt;MyComponent priority={5} /&gt;</pre><p><br></p><pre class=\"prettyprint linenums\">function MyComponent(priority) {\n  return &lt;p&gt;Priority:&nbsp;{priority}&lt;/p&gt;\n}</pre>"]}, "correct_response": ["d"], "section": "", "question_plain": "Which of the following four code examples for setting &amp;&nbsp;extracting props would NOT&nbsp;work as intended?I.e., which example will NOT&nbsp;output the text \"Priority: 5\" on the screen.", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
