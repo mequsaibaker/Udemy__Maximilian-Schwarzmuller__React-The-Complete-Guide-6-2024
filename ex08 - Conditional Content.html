@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "034 Conditional Content", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>You're working on a part of a web app that's responsible for <strong>showing a warning</strong> when a user is about to perform a dangerous action.</p><p>Therefore, your task is to <strong>conditionally</strong> show a warning box once a user has <strong>clicked</strong> a specific button. Inside that warning dialog, another button allows users to <strong>dismiss the warning</strong> (i.e., remove the warning box from the screen).</p><p>The finished app should display this UI, if the <code>&lt;button&gt;</code> has not been clicked yet:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-01-25_19-46-44-9e8772f6a8078c9d8f887588a31cdce2.png\"></p><p>And this UI, once the button was clicked:</p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-06_12-57-21-a8d95b784a4564808114e8b27898a128.jpg\"><p><br></p><p>Once the \"Proceed\" button was clicked, the warning box should be removed again:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-01-25_19-46-45-422a664c8ab05139df000f6945d859ff.png\"></p><p>For this task, you must react to clicks on both <code>&lt;button&gt;</code> elements that are part of the starting code. The second button, outside of the <code>&lt;div&gt;</code> with the <code>id=\"alert\"</code>, should show the <code>&lt;div id=\"alert\"&gt;</code> (and all its content). The button inside that <code>&lt;div&gt;</code> should then hide it again (i.e., remove it from the DOM).</p><p>It's up to you whether you want to use a ternary expression or store the conditionally shown JSX&nbsp;code in a variable.</p><p><em>Important:&nbsp;In this Udemy code editor you may get an error if you use </em><code><em>useState()</em></code><em> - use </em><code><em>React.useState()</em></code><em> instead!</em></p>", "tests": [{"file_name": "App.spec.js", "content": "\nimport App from '../src/App.js';\nimport { render, screen, fireEvent, cleanup } from '@testing-library/react';\n\ndescribe('App component', () => {\n    afterEach(() => {\n        cleanup();\n    });\n    test('should not display the warning if the button was not clicked', () => {\n        render(<App />);\n        const alert = screen.queryByTestId('alert');\n        expect(alert).not.toBeInTheDocument();\n    });\n    test('should display the warning after the button was clicked', () => {\n        render(<App />);\n        let alert = screen.queryByTestId('alert');\n        expect(alert).not.toBeInTheDocument();\n        const button = screen.getByRole('button');\n        fireEvent.click(button);\n        alert = screen.queryByTestId('alert');\n        expect(alert).toBeInTheDocument();\n    });\n    test('should not display the warning after dismissing it', () => {\n        render(<App />);\n        let alert = screen.queryByTestId('alert');\n        expect(alert).not.toBeInTheDocument();\n        const button = screen.getByRole('button');\n        fireEvent.click(button);\n        alert = screen.queryByTestId('alert');\n        expect(alert).toBeInTheDocument();\n        const proceedBtn = screen.getAllByRole('button')[0];\n        fireEvent.click(proceedBtn);\n        alert = screen.queryByTestId('alert');\n        expect(alert).not.toBeInTheDocument();\n    });\n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "import React from 'react';\n\n// don't change the Component name \"App\"\nexport default function App() {\n    const [isDeleting, setIsDeleting] = React.useState(false);\n    \n    function handleDelete() {\n        setIsDeleting(true);\n    }\n    \n    function handleProceed() {\n        setIsDeleting(false);\n    }\n    \n    let warning;\n    \n    if (isDeleting) {\n        warning = (\n            <div data-testid=\"alert\" id=\"alert\">\n              <h2>Are you sure?</h2>\n              <p>These changes can't be reverted!</p>\n              <button onClick={handleProceed}>Proceed</button>\n            </div>\n        );\n    }\n    \n    return (\n      <div>\n        {warning}\n        <button onClick={handleDelete}>Delete</button>\n      </div>    \n    );\n}", "type": "jsx"}, {"file_name": "index.css", "content": "body {\n    font-family: sans-serif;\n    margin: 0;\n    padding: 3rem;\n    background-color: #2d2c2c;\n    color: #959090;\n    text-align: center;\n}\n\n#alert {\n    margin: 3rem auto;\n    padding: 1rem;\n    width: 15rem;\n    border: 2px solid #dd3562;\n    background-color: #776167;\n    color: white;\n}\n\n#alert button {\n    font: inherit;\n    \n    border: none;\n    padding: 0.5rem 1.5rem;\n    background-color: 540218;\n    color: white;\n    border-radius: 4px;\n    cursor: pointer;\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
