@@ -16,7 +16,7 @@ function App() {
       <Header />
       <main>
         <section id="core-concepts">
-          <ul>
+          {/* <ul>
             <CoreConcept
               title={CORE_CONCEPTS[0].title}
               description={CORE_CONCEPTS[0].description}
@@ -25,6 +25,11 @@ function App() {
             <CoreConcept {...CORE_CONCEPTS[1]} />
             <CoreConcept {...CORE_CONCEPTS[2]} />
             <CoreConcept {...CORE_CONCEPTS[3]} />
+          </ul> */}
+          <ul>
+            {CORE_CONCEPTS.map((item) => (
+              <CoreConcept key={item.title} {...item} />
+            ))}
           </ul>
         </section>
         <section id="examples">
