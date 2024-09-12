@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "036 Dynamic Styling", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to <strong>dynamically</strong> apply a CSS&nbsp;class (<code>active</code>) to the <code>&lt;p&gt;Style me&lt;/p&gt;</code> element in the provided React app.</p><p>The class should be applied when the <code>&lt;button&gt;</code> is clicked for the first time.</p><p>Here's how the finished app should look like BEFORE the button was clicked:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-01-25_20-03-23-02fdb3ce682409032876037dd28b863f.png\"></p><p>Here's how it should look like AFTER&nbsp;the button was clicked:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-01-25_20-03-24-7c8e4ce80ee28148c63cfe980f251d9d.png\"></p><p><br></p><p><em>Important:&nbsp;Use </em><code><em>React.useState()</em></code><em> instead of just </em><code><em>useState()</em></code><em> as the latter can cause problems in this Udemy code environment.</em></p>", "tests": [{"file_name": "App.spec.js", "content": "import React from 'react';\n\nimport App from '../src/App.js';\nimport { render, screen, fireEvent } from '@testing-library/react';\n\ndescribe('App component', () => {\n    test('should not add any CSS class to the paragraph if the button was not clicked', () => {\n        \n        render(\n            <App />\n        );\n        const texts = screen.getAllByText('Style me', {exact: false});\n        expect(texts[0].className).toBe('');\n    });\n    test('should set the \"active\" CSS class on the paragraph if the button was clicked', () => {\n        \n        render(\n            <App />\n        );\n        const texts = screen.getAllByText('Style me', {exact: false});\n        const button = screen.getByRole('button');\n        fireEvent.click(button);\n        expect(texts[0].className).toBe('active')\n    });\n \n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "import React from 'react';\n\n// don't change the Component name \"App\"\nexport default function App() {\n    const [highlighted, setHighlighted] = React.useState(false);\n    \n    function handleClick() {\n        setHighlighted(isHighlighted => !isHighlighted);\n    }\n    \n    return (\n        <div>\n            <p className={highlighted ? 'active' : undefined}>Style me!</p>\n            <button onClick={handleClick}>Toggle style</button>\n        </div>\n    );\n}\n", "type": "jsx"}, {"file_name": "index.css", "content": "body {\n    font-family: sans-serif;\n    margin: 0;\n    padding: 3rem;\n    background-color: #2d2c2c;\n    color: #959090;\n    text-align: center;\n}\n\n.active {\n    color: red;\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
