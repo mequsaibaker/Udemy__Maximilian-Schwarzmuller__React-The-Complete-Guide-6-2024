@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "021 Component Composition", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to create a reusable <code>Card</code> component that takes a <code>name</code> prop as an input and, in addition, can be wrapped around any JSX code.</p><p>Use the already existing <code>Card.js</code> file to create the <code>Card</code> component in there. You can add the <code>card</code> CSS class to the main wrapping element in that component for some styling.</p><p>The <code>name</code> prop should be output as a title inside the <code>Card</code> component, the wrapped JSX code should be output below that title.</p><p>For example, the final <code>Card</code> component, should be usable like this:</p><pre class=\"prettyprint linenums\">&lt;Card name=\"Maria Miles\"&gt;\n  &lt;p&gt;\n    Maria is a professor of Computer Science at the University of Illinois.\n  &lt;/p&gt;\n  &lt;p&gt;\n    &lt;a href=\"mailto:blake@example.com\"&gt;Email Maria&lt;/a&gt;\n  &lt;/p&gt;\n&lt;/Card&gt;</pre><p>This should yield the following visual <strong>output</strong>:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-06_10-54-46-2bc80121ea6359c7e4790b3a5e772db6.jpg\"></p><p><em>You can, but don't have to, tweak and edit the JSX&nbsp;code returned by the </em><code><em>App</em></code><em> component.</em></p>", "tests": [{"file_name": "App.spec.js", "content": "import { render, screen, cleanup } from '@testing-library/react';\n\nimport Card from '../src/Card';\n\ndescribe('Card', () => {\n  afterEach(() => {\n    cleanup();\n  });\n\n  test('should accept and output a name prop', () => {\n    render(<Card name=\"Testing name prop\" />);\n    expect(screen.getAllByText('Testing name prop', { exact: false }).length).not.toBe(0);\n  });\n\n  test('should accept and output children', () => {\n    render(<Card>Test Text</Card>);\n    expect(screen.getAllByText('Test Text', { exact: false }).length).not.toBe(0)\n  });\n\n  test('should persist the JSX code passed as children', () => {\n    render(\n      <Card>\n        <button>Test Text</button>\n      </Card>\n    );\n    const paragraph = screen.getByRole('button');\n    expect(paragraph).toBeInTheDocument();\n    expect(paragraph).toHaveTextContent('Test Text');\n  });\n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "import Card from './Card';\n\nfunction App() {\n  return (\n    <div id=\"app\">\n      <h1>Available Experts</h1>\n      <Card name=\"Anthony Blake\">\n        <p>\n          Blake is a professor of Computer Science at the University of\n          Illinois.\n        </p>\n        <p>\n          <a href=\"mailto:blake@example.com\">Email Anthony</a>\n        </p>\n      </Card>\n\n      <Card name=\"Maria Miles\">\n        <p>\n          Maria is a professor of Computer Science at the University of\n          Illinois.\n        </p>\n        <p>\n          <a href=\"mailto:blake@example.com\">Email Maria</a>\n        </p>\n      </Card>\n    </div>\n  );\n}\n\nexport default App;\n", "type": "jsx"}, {"file_name": "Card.js", "content": "export default function Card({ name, children }) {\n  return (\n    <article className=\"card\">\n      <h2>{name}</h2>\n      {children}\n    </article>\n  );\n}\n", "type": "jsx"}, {"file_name": "index.css", "content": "@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  font-family: 'Raleway', sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(#dfdee0, #c3c3c4);\n  color: #e5d9f1;\n  min-height: 100vh;\n}\n\n.card {\n  margin: 2rem auto;\n  padding: 2rem;\n  max-width: 30rem;\n  border-radius: 6px;\n  background: linear-gradient(#254041, #203031);\n  box-shadow: 0 0 8px rgba(0,0,0,0.3);\n}\n\n.card h2 {\n  margin: 0;\n  font-family: 'Lato', sans-serif;\n  font-weight: bold;\n  font-size: 1.5rem;\n  color: #e5d9f1;\n}\n\n.card p {\n  margin: 0.5rem 0;\n}\n\n.card a {\n  color: #b3f4f6;\n  text-decoration: none;\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
