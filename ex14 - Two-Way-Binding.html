@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "024 Two-Way-Binding", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to <strong>collect the values</strong> entered into the two input controls (<code>&lt;textarea&gt;</code>&nbsp;and <code>&lt;input&gt;</code>) via <strong>two-way binding</strong>.</p><p>In addition, you should <strong>pass</strong> the collected values via the appropriate props to the already existing <code>Review</code> component.</p><p><em>Important:&nbsp;In this Udemy workspace, you must use </em><code><em>React.useState()</em></code><em> instead of just </em><code><em>useState()</em></code><em>!</em></p><p>The final app should allow users to enter values and then see those entered values in the <code>Review</code> component which is output below the input components. It should look like this:</p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_08-51-31-9f73cfd685216d55ab58414730bdbdc0.jpg\"><p>The <em>\"Save\"</em>&nbsp;button is just there for decoration purposes - you don't need to do anything with that!</p>", "tests": [{"file_name": "App.spec.js", "content": "import { render, screen, cleanup, fireEvent } from '@testing-library/react';\n\nimport App from '../src/App';\n\ndescribe('App', () => {\n  afterEach(() => {\n    cleanup();\n  });\n  test('should output any entered feedback text inside the <textarea>', () => {\n    render(<App />);\n    const textarea = screen.getAllByRole('textbox')[0];\n    fireEvent.change(textarea, { target: { value: 'Hello World' } });\n    expect(textarea.value).toBe('Hello World');\n  });\n  test('should output any entered name text inside the <input>', () => {\n    render(<App />);\n    const input = screen.getAllByRole('textbox')[1];\n    fireEvent.change(input, { target: { value: 'Student Name' } });\n    expect(input.value).toBe('Student Name');\n  });\n  test('should output any entered feedback text inside the <Review> component', () => {\n    render(<App />);\n    const textarea = screen.getAllByRole('textbox')[0];\n    fireEvent.change(textarea, { target: { value: 'Hello World' } });\n    const review = screen.getByRole('figure').querySelector('blockquote p');\n    expect(review.textContent).toBe('Hello World');\n  });\n  test('should output any entered name text inside the <Review> component', () => {\n    render(<App />);\n    const input = screen.getAllByRole('textbox')[1];\n    fireEvent.change(input, { target: { value: 'Student Name' } });\n    const review = screen.getByRole('figure').querySelector('figcaption');\n    expect(review.textContent).toBe('Student Name');\n  });\n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "import React from 'react';\n\nimport Review from './Review';\n\nfunction App() {\n  const [studentName, setStudentName] = React.useState('');\n  const [feedback, setFeedback] = React.useState('');\n\n  function handleChangeName(event) {\n    setStudentName(event.target.value);\n  }\n\n  function handleChangeFeedback(event) {\n    setFeedback(event.target.value);\n  }\n\n  return (\n    <>\n      <section id=\"feedback\">\n        <h2>Please share some feedback</h2>\n        <p>\n          <label>Your Feedback</label>\n          <textarea onChange={handleChangeFeedback} value={feedback} />\n        </p>\n        <p>\n          <label>Your Name</label>\n          <input type=\"text\" onChange={handleChangeName} value={studentName} />\n        </p>\n      </section>\n      <section id=\"draft\">\n        <h2>Your feedback</h2>\n\n        <Review feedback={feedback} student={studentName} />\n\n        <p>\n          <button>Save</button>\n        </p>\n      </section>\n    </>\n  );\n}\n\nexport default App;\n", "type": "jsx"}, {"file_name": "Review.js", "content": "export default function Review({ feedback, student }) {\n  return (\n    <figure>\n      <blockquote>\n        <p>{feedback}</p>\n      </blockquote>\n      <figcaption>{student}</figcaption>\n    </figure>\n  );\n}\n", "type": "jsx"}, {"file_name": "index.css", "content": "@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  font-family: 'Raleway', sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(#180d27, #0c0219);\n  color: #e5d9f1;\n  min-height: 100vh;\n}\n\n#feedback {\n  max-width: 30rem;\n  margin: 2rem auto;\n  padding: 1rem;\n  background-color: #669ae7;\n  color: #041023;\n  border-radius: 4px;\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);\n}\n\n#feedback p {\n  margin: 0.5rem 0;\n}\n\n#feedback label {\n  display: block;\n  font-weight: bold;\n  text-transform: uppercase;\n  color: #364660;\n  font-size: 0.85rem;\n  margin: 0.25rem 0;\n}\n\n#feedback input,\n#feedback textarea {\n  font: inherit;\n  display: block;\n  margin: 0 0 1rem 0;\n  padding: 0.5rem;\n  width: 100%;\n  border-radius: 4px;\n  border: 1px solid #798aa9;\n  background-color: #b4c4e6;\n  color: #041023;\n}\n\n#draft {\n  font-family: 'Lato', sans-serif;\n  max-width: 30rem;\n  margin: 2rem auto;\n  padding: 1rem;\n  background-color: #67d7b0;\n  color: #0b3929;\n  border-radius: 4px;\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);\n  text-align: center;\n}\n\n#draft figure {\n  margin: 0;\n  padding: 0;\n}\n\n#draft blockquote {\n  margin: 0 2rem;\n  padding: 0.5rem 1rem;\n  background-color: #65b69a;\n  border-radius: 4px;\n  color: #042217;\n  font-style: italic;\n}\n\n#draft blockquote p {\n  margin: 0;\n}\n\n#draft figcaption {\n  margin: 0.2rem 0;\n  font-size: 0.75rem;\n}\n\n#draft button {\n  margin: 1rem 0;\n  padding: 0.5rem 1rem;\n  border-radius: 4px;\n  border: none;\n  background-color: #0b3929;\n  color: #ecf8f4;\n  font-size: 1rem;\n  cursor: pointer;\n}"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
