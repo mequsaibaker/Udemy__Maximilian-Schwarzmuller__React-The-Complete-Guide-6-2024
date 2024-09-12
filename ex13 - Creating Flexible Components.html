@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "013 Creating Flexible Components", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to build a <strong>highly re-usable</strong>, custom <code>Button</code> component that can be used in all the following ways <em>(also see the code in the </em><code><em>App.js</em></code><em> file)</em>:</p><p><strong>\"Filled\" mode (default):</strong></p><pre class=\"prettyprint linenums\">&lt;Button&gt;Default&lt;/Button&gt;</pre><p>or</p><pre class=\"prettyprint linenums\">&lt;Button mode=\"filled\"&gt;Filled&lt;/Button&gt;</pre><p>should yield buttons that looks like this:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_08-14-09-9e0942aa017efab3e67a237007c9ddf7.jpg\"></p><p><br></p><p><strong>\"Outline\" mode:</strong></p><pre class=\"prettyprint linenums\">&lt;Button mode=\"outline\"&gt;Outline&lt;/Button&gt;</pre><p>should yield a button that looks like this:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_08-14-09-bdd4f81b0c35ac13a04df25f1017afdc.jpg\"></p><p><strong>\"Text-only\" mode:</strong></p><pre class=\"prettyprint linenums\">&lt;Button mode=\"text\"&gt;Text&lt;/Button&gt;</pre><p>should yield a button that looks like this:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_08-14-09-0bfb599904da93380aebf981287e4540.jpg\"></p><p><strong>With Icon:</strong></p><pre class=\"prettyprint linenums\">&lt;Button Icon={HomeIcon}&gt;Home&lt;/Button&gt;</pre><p>or</p><pre class=\"prettyprint linenums\">&lt;Button Icon={PlusIcon} mode=\"text\"&gt;\n  Add\n&lt;/Button&gt;</pre><p>should yield buttons that look like this:</p><p><img src=\"https://img-b.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_08-14-09-453d7baa96572c1e8499895b40465db1.jpg\"></p><p><em>Hint:&nbsp;To make sure the icon becomes visible (if passed correctly to the component &amp;&nbsp;used in there), wrap the icon component in the button with a </em><code><em>&lt;span&gt;</em></code><em> that has the class </em><code><em>\"button-icon\"</em></code><em> on it.</em></p><p><em>Also wrap the </em><code><em>children</em></code><em> prop with a </em><code><em>&lt;span&gt;</em></code><em>!</em></p><p>You find all the styles (CSS classes)&nbsp;that are required to build a button that supports these different \"modes\"&nbsp;in the provided <code>index.css</code> file!</p><p>All buttons need a <code>button</code> CSS class - and then, depending on their mode, additional classes.</p><p>In addition, the custom <code>Button</code> component <strong>must accept</strong> all <strong>standard props</strong> that could be set on the built-in <code>&lt;button&gt;</code>. These props should be <strong>forwarded</strong> to the default <code>&lt;button&gt;</code> element that will be used in the custom Button component.</p><p>Your task therefore is to work on the <code>Button</code> component provided in the <code>Button.js</code> file. <strong>Don't</strong> add multiple custom components, instead work on that <strong>one</strong> provided component and make sure that it supports all these different modes &amp;&nbsp;features. Also make sure, that if no mode is set, the <em>\"filled\"</em>&nbsp;mode is assumed as a default.</p>", "tests": [{"file_name": "App.spec.js", "content": "import React from 'react';\n\nimport { render, screen, cleanup } from '@testing-library/react';\n\nimport Button from '../src/Button';\n\ndescribe('Button', () => {\n  afterEach(() => {\n    cleanup();\n  });\n  test('should have the class filled-button if the Button mode prop is set to \"filled\"', () => {\n    render(<Button mode=\"filled\">Filled</Button>);\n    expect(screen.getByRole('button')).toHaveClass('filled-button');\n  });\n  test('should have the class filled-button if the Button mode prop is not set', () => {\n    render(<Button>Default</Button>);\n    expect(screen.getByRole('button')).toHaveClass('filled-button');\n  });\n  test('should have the class outline-button if the Button mode prop is set to \"outline\"', () => {\n    render(<Button mode=\"outline\">Outline</Button>);\n    expect(screen.getByRole('button')).toHaveClass('outline-button');\n  });\n  test('should have the class text-button if the Button mode prop is set to \"text\"', () => {\n    render(<Button mode=\"text\">Text</Button>);\n    expect(screen.getByRole('button')).toHaveClass('text-button');\n  });\n  test('should have the class icon-button if the Button has an Icon prop', () => {\n    render(<Button Icon={() => <div>Icon</div>}>Button Text</Button>);\n    expect(screen.getByRole('button')).toHaveClass('icon-button');\n  });\n  test('should display the icon if the Button has an Icon prop', () => {\n    render(<Button Icon={() => <div>Icon</div>}>Button Text</Button>);\n    expect(screen.getByText('Icon')).toBeInTheDocument();\n  });\n  test('should not display the icon if the Button does not have an Icon prop', () => {\n    render(<Button>Button Text</Button>);\n    expect(screen.getByRole('button').children.length).toBe(1);\n  });\n  test('should support setting the onClick prop', () => {\n    const onClick = jest.fn();\n    render(<Button onClick={onClick}>Click me</Button>);\n    screen.getByRole('button').click();\n    expect(onClick).toHaveBeenCalled();\n  });\n  test('should support setting the disabled prop', () => {\n    render(<Button disabled>Disabled</Button>);\n    expect(screen.getByRole('button')).toBeDisabled();\n  });\n});\n", "type": "jsx"}], "solutions": [{"file_name": "App.js", "content": "import Button from './Button';\nimport HomeIcon from './HomeIcon';\nimport PlusIcon from './PlusIcon';\n\nfunction App() {\n  return (\n    <div id=\"app\">\n      <section>\n        <h2>Filled Button (Default)</h2>\n        <p>\n          <Button>Default</Button>\n        </p>\n        <p>\n          <Button mode=\"filled\">Filled (Default)</Button>\n        </p>\n      </section>\n      <section>\n        <h2>Button with Outline</h2>\n        <p>\n          <Button mode=\"outline\">Outline</Button>\n        </p>\n      </section>\n      <section>\n        <h2>Text-only Button</h2>\n        <p>\n          <Button mode=\"text\">Text</Button>\n        </p>\n      </section>\n      <section>\n        <h2>Button with Icon</h2>\n        <p>\n          <Button Icon={HomeIcon}>Home</Button>\n        </p>\n        <p>\n          <Button Icon={PlusIcon} mode=\"text\">\n            Add\n          </Button>\n        </p>\n      </section>\n      <section>\n        <h2>Buttons Should Support Any Props</h2>\n        <p>\n          <Button mode=\"filled\" disabled>\n            Disabled\n          </Button>\n        </p>\n        <p>\n          <Button onClick={() => console.log('Clicked!')}>Click me</Button>\n        </p>\n      </section>\n    </div>\n  );\n}\n\nexport default App;", "type": "jsx"}, {"file_name": "Button.js", "content": "export default function Button({ children, mode = 'filled', Icon, ...props}) {\n  let cssClasses = `button ${mode}-button`;\n\n  if (Icon) {\n    cssClasses += ' icon-button';\n  }\n\n  if (props.className) {\n    cssClasses += ' ' + props.className;\n  }\n\n  return (\n    <button className={cssClasses} {...props}>\n      {Icon && (\n        <span className=\"button-icon\">\n          <Icon />\n        </span>\n      )}\n      <span>{children}</span>\n    </button>\n  );\n}", "type": "jsx"}, {"file_name": "PlusIcon.js", "content": "export default function PlusIcon() {\n  return (\n    <svg\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 20 20\"\n      fill=\"currentColor\"\n    >\n      <path d=\"M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z\" />\n    </svg>\n  );\n}\n", "type": "jsx"}, {"file_name": "HomeIcon.js", "content": "export default function HomeIcon() {\n  return (\n    <svg\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 20 20\"\n      fill=\"currentColor\"\n    >\n      <path\n        fillRule=\"evenodd\"\n        d=\"M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z\"\n        clipRule=\"evenodd\"\n      />\n    </svg>\n  );\n}\n", "type": "jsx"}, {"file_name": "index.css", "content": "@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  font-family: 'Raleway', sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(#f3f0f8, #d6d2db);\n  color: #e5d9f1;\n  min-height: 100vh;\n}\n\nsection {\n  margin: 1rem auto;\n  max-width: 30rem;\n}\n\nh2 {\n  font-size: 1.5rem;\n  font-weight: 700;\n  margin: 0;\n  color: #030a1b;\n}\n\n.button {\n  display: inline-block;\n  margin: 0.5rem;\n  padding: 0.5rem 1rem;\n  border: none;\n  background: transparent;\n  font-family: 'Lato', sans-serif;\n  text-decoration: none;\n  cursor: pointer;\n  border-radius: 2px;\n}\n\n.icon-button {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n\n.button-icon {\n  width: 1rem;\n  height: 1rem;\n}\n\n.filled-button {\n  background: linear-gradient(#7fa1f7, #6085e4);\n  color: #030a1b;\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n}\n\n.filled-button:hover {\n  background: linear-gradient(#89a9fb, #6890f6);\n}\n\n.filled-button:disabled {\n  background: #a3a9b7;\n  color: #3a445c;\n  box-shadow: none;\n  cursor: not-allowed;\n}\n\n.outline-button {\n  border: 1px solid #2658d6;\n  color: #2658d6;\n}\n\n.outline-button:hover {\n  background: #cbd8fc;\n}\n\n.text-button {\n  color: #2658d6;\n}\n\n.text-button:hover {\n  background: #cbd8fc;\n}\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
